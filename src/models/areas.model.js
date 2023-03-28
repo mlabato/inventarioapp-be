@@ -1,12 +1,12 @@
 const areas = require("./areas.mongo");
 
-const DEFAULT_ID_NUMBER = 1;
+const DEFAULT_ID_NUMBER = 0;
 
 //HELPING FUNCTIONS
 const getLatestIdNumber = async () => {
   const latestIdNumber = await areas.findOne().sort("-id");
-
-  if (!latestIdNumber) {
+  
+  if (latestIdNumber === null) {
     return DEFAULT_ID_NUMBER;
   }
   return latestIdNumber.id;
