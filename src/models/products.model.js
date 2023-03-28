@@ -1,11 +1,11 @@
 const products = require("./products.mongo");
 
-const DEFAULT_ID_NUMBER = 1;
+const DEFAULT_ID_NUMBER = 0;
 
 const getLatestIdNumber = async () => {
   const latestIdNumber = await products.findOne().sort("-id");
 
-  if (!latestIdNumber) {
+  if (latestIdNumber === null) {
     return DEFAULT_ID_NUMBER;
   }
   return latestIdNumber.id;
