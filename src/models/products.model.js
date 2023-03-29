@@ -1,4 +1,6 @@
 const products = require("./products.mongo");
+const users = require("./users.mongo");
+const areas = require("../models/areas.mongo")
 
 const DEFAULT_ID_NUMBER = 0;
 
@@ -26,15 +28,29 @@ const getAllProducts = async () => {
 };
 
 const registerNewProduct = async (product) => {
-  const newIdNumber = (await getLatestIdNumber()) + 1;
-
-  const newProduct = Object.assign(product, {
-    id: newIdNumber,
-    registrationDate: new Date(),
-    active: true,
+  const user = await users.findOne({
+    username: product.user,
   });
 
-  await saveProduct(newProduct);
+  const area = await areas.findOne({
+    area: product.area,
+  });
+
+  if (!user || !area) {
+    return { error: "No matching area or user found" };
+  } else {
+    const newIdNumber = (await getLatestIdNumber()) + 1;
+
+    const newProduct = Object.assign(product, {
+      id: newIdNumber,
+      registrationDate: new Date(),
+      active: true,
+    });
+
+    await saveProduct(newProduct);
+
+    return newProduct
+  }
 };
 
 module.exports = { getAllProducts, registerNewProduct };

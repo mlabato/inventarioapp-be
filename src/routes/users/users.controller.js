@@ -14,6 +14,7 @@ const httpGetAllUsers = async (req, res) => {
           });
     }
     addNewUser(user)
+
     
     return res.status(201).json(user)
 }

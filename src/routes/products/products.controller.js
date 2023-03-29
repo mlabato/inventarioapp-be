@@ -17,8 +17,9 @@ const httpRegisterNewProduct = async (req,res) => {
             error: "Missing required product property",
           });
     }
-    registerNewProduct(product)
+
+    const modelResponse = await registerNewProduct(product)
     
-    return res.status(201).json(product)
+    return res.status(201).json(modelResponse)
 }
 module.exports = { httpGetAllProducts, httpRegisterNewProduct };
