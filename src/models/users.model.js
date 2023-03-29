@@ -49,4 +49,8 @@ const addNewUser = async (user) => {
   await saveUser(newUser);
 };
 
-module.exports = { getAllUsers, addNewUser, existsUserWithId };
+const deleteUserById = async (userId) => {
+  return await users.deleteOne({ id: userId });
+};
+
+module.exports = { getAllUsers, addNewUser, deleteUserById, existsUserWithId };

@@ -1,4 +1,4 @@
-const {getAllUsers, existsUserWithId, addNewUser} = require("../../models/users.model")
+const {getAllUsers, existsUserWithId, addNewUser, deleteUserById} = require("../../models/users.model")
 
 const httpGetAllUsers = async (req, res) => {
     const responseUsers = await getAllUsers();
@@ -18,8 +18,31 @@ const httpGetAllUsers = async (req, res) => {
     return res.status(201).json(user)
 }
 
+const httpDeleteUser = async (req, res) => {
+  const userId = Number(req.params.id)
+  
+  const existsUser = await existsUserWithId(userId)
+  
+  if (!existsUser) {
+      return res.status(404).json({
+        error: "user no found",
+      });
+    }
 
-  module.exports = {httpGetAllUsers, httpAddNewUser }
+    const deleted = await deleteUserById(userId)
+
+    if(!deleted){
+      return res.status(400).json({
+        error: "user not deleted"
+      })
+    }
+  
+    return res.status(200).json({
+      ok: true
+    });
+}
 
 
-  //, httpDeleteArea
+  module.exports = {httpGetAllUsers, httpAddNewUser, httpDeleteUser }
+
+

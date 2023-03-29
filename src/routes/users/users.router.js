@@ -1,10 +1,10 @@
 const express = require("express");
-const { httpGetAllUsers, httpAddNewUser } = require("./users.controller");
+const { httpGetAllUsers, httpAddNewUser, httpDeleteUser } = require("./users.controller");
 
 const usersRouter = express.Router();
 
 usersRouter.get("/", httpGetAllUsers);
 usersRouter.post("/", httpAddNewUser);
-// areasRouter.delete("/:id", httpDeleteArea);
+usersRouter.delete("/:id", httpDeleteUser);
 
 module.exports = usersRouter;
