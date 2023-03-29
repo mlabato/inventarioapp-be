@@ -13,14 +13,14 @@ const httpGetAllUsers = async (req, res) => {
             error: "Missing required user property",
           });
     }
-    addNewUser(user)
+   const userResponse = await addNewUser(user)
 
     
-    return res.status(201).json(user)
+    return res.status(201).json(userResponse)
 }
 
 const httpDeleteUser = async (req, res) => {
-  const userId = Number(req.params.id)
+  const userId = Number(req.params.id) 
   
   const existsUser = await existsUserWithId(userId)
   

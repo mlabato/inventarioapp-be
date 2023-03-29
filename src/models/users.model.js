@@ -42,11 +42,25 @@ const getAllUsers = async () => {
 const addNewUser = async (user) => {
   const newIdNumber = (await getLatestIdNumber()) + 1;
 
-  const newUser = Object.assign(user, {
-    id: newIdNumber,
+  const registeredUsers = await users.findOne({
+    username: user.username,
   });
 
-  await saveUser(newUser);
+
+
+  if(registeredUsers){
+    return { error: "the user is already registered "};
+  }else{
+    const newUser = Object.assign(user, {
+      id: newIdNumber,
+    });
+  
+    await saveUser(newUser);
+
+    return newUser
+  }
+  
+
 };
 
 const deleteUserById = async (userId) => {
