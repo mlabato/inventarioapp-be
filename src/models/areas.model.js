@@ -39,11 +39,23 @@ const getAllAreas = async () => {
 const addNewArea = async (area) => {
   const newIdNumber = (await getLatestIdNumber()) + 1;
 
-  const newArea = Object.assign(area, {
-    id: newIdNumber,
+  const registeredAreas = await areas.findOne({
+    area: area.area,
   });
 
-  await saveArea(newArea);
+  if(registeredAreas){
+    return { error: "the area is already registered "};
+  }else{
+    const newArea = Object.assign(area, {
+      id: newIdNumber,
+    });
+  
+    await saveArea(newArea);
+
+    return newArea
+  }
+
+
 };
 
 const deleteAreaById = async (areaId) => {

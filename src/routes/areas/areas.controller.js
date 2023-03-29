@@ -13,9 +13,9 @@ const httpGetAllAreas = async (req, res) => {
             error: "Missing required area property",
           });
     }
-    addNewArea(area)
+   const areaResponse = await addNewArea(area)
     
-    return res.status(201).json(area)
+    return res.status(201).json(areaResponse)
 }
 
 const httpDeleteArea = async (req, res) => {
