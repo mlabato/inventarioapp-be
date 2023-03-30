@@ -39,7 +39,8 @@ const httpEditProductById = async (req, res) => {
 
   if (edited.error) {
     return res.status(400).json({
-      error: "user not edited",
+      msg: "product not edited",
+      error: edited.error
     });
   }
 
