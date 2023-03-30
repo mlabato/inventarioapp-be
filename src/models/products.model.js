@@ -53,4 +53,25 @@ const registerNewProduct = async (product) => {
   }
 };
 
-module.exports = { getAllProducts, registerNewProduct };
+const editProductById = async(product, id) => {
+  const area = await areas.findOne({
+    area: product.area,
+  });
+
+  const user = await users.findOne({
+    username: product.user,
+  });
+
+
+  if(!area || !user){
+    return { error: "No matching area or user found" };
+  }else{
+    const editedProduct = Object.assign(product, {id: id})
+    
+    await saveProduct(editedProduct)
+
+    return editedProduct
+  }
+}
+
+module.exports = { getAllProducts, registerNewProduct, editProductById };
