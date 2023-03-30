@@ -1,4 +1,5 @@
 const users = require("./users.mongo");
+const areas = require("./areas.mongo")
 
 const DEFAULT_ID_NUMBER = 0;
 
@@ -14,13 +15,12 @@ const getLatestIdNumber = async () => {
 };
 
 async function saveUser(user) {
-    
   await users.updateOne(
     {
       id: user.id,
     },
     user,
-    { upsert: true, strict:false }
+    { upsert: true, strict: false }
   );
 }
 
@@ -46,25 +46,37 @@ const addNewUser = async (user) => {
     username: user.username,
   });
 
-
-
-  if(registeredUsers){
-    return { error: "the user is already registered "};
-  }else{
+  if (registeredUsers) {
+    return { error: "the user is already registered " };
+  } else {
     const newUser = Object.assign(user, {
       id: newIdNumber,
     });
-  
+
     await saveUser(newUser);
 
-    return newUser
+    return newUser;
   }
-  
-
 };
 
 const deleteUserById = async (userId) => {
   return await users.deleteOne({ id: userId });
 };
 
-module.exports = { getAllUsers, addNewUser, deleteUserById, existsUserWithId };
+const editUserById = async(user, id) => {
+  const area = await areas.findOne({
+    area: user.area,
+  });
+
+  if(!area){
+    return { error: "No matching area found" };
+  }else{
+    const editedUser = Object.assign(user, {id: id})
+    
+    await saveUser(editedUser)
+
+    return editedUser
+  }
+}
+
+module.exports = { getAllUsers, addNewUser, deleteUserById, existsUserWithId, editUserById };
