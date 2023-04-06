@@ -32,21 +32,21 @@ const registerNewProduct = async (product) => {
     username: product.user,
   });
 
-  const area = await areas.findOne({
-    area: product.area,
-  });
 
-  if (!user || !area) {
-    return { error: "No matching area or user found" };
+
+  if (!user) {
+    return { error: "No user found" };
   } else {
     const newIdNumber = (await getLatestIdNumber()) + 1;
 
     const newProduct = Object.assign(product, {
+      area: user._doc.area,
       id: newIdNumber,
       registrationDate: new Date(),
       active: true,
     });
 
+   
     await saveProduct(newProduct);
 
     return newProduct

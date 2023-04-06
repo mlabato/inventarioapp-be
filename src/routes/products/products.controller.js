@@ -16,9 +16,7 @@ const httpRegisterNewProduct = async (req, res) => {
   if (
     !product.brand ||
     !product.model ||
-    !product.user ||
-    !product.code ||
-    !product.area
+    !product.user 
   ) {
     return res.status(400).json({
       error: "Missing required product property",

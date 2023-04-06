@@ -1,5 +1,6 @@
 const users = require("./users.mongo");
 const areas = require("./areas.mongo")
+const products = require("./products.mongo")
 
 const DEFAULT_ID_NUMBER = 0;
 
@@ -60,6 +61,20 @@ const addNewUser = async (user) => {
 };
 
 const deleteUserById = async (userId) => {
+  const userToDelete = await users.findOne({ id: userId }, {})
+
+  const foundUserUsername = userToDelete._doc.username
+ 
+  
+  const newAreaAndUserAssignation = {
+    "area": "Sin asignar",
+    "user": "Sin asignar"
+  }
+
+ await products.updateMany({user: foundUserUsername}, newAreaAndUserAssignation)
+
+
+
   return await users.deleteOne({ id: userId });
 };
 
