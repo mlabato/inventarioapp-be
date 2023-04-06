@@ -1,6 +1,6 @@
 const products = require("./products.mongo");
 const users = require("./users.mongo");
-const areas = require("../models/areas.mongo")
+const areas = require("../models/areas.mongo");
 
 const DEFAULT_ID_NUMBER = 0;
 
@@ -32,8 +32,6 @@ const registerNewProduct = async (product) => {
     username: product.user,
   });
 
-
-
   if (!user) {
     return { error: "No user found" };
   } else {
@@ -46,14 +44,13 @@ const registerNewProduct = async (product) => {
       active: true,
     });
 
-   
     await saveProduct(newProduct);
 
-    return newProduct
+    return newProduct;
   }
 };
 
-const editProductById = async(product, id) => {
+const editProductById = async (product, id) => {
   const area = await areas.findOne({
     area: product.area,
   });
@@ -62,16 +59,31 @@ const editProductById = async(product, id) => {
     username: product.user,
   });
 
-
-  if(!area || !user){
+  if (!area || !user) {
     return { error: "No matching area or user found" };
-  }else{
-    const editedProduct = Object.assign(product, {id: id})
-    
-    await saveProduct(editedProduct)
+  } else {
+    if (!product.active) {
+      Object.defineProperties(product, {
+        area: {
+          value: "Sin asignar",
+        },
+        user: {
+          value: "Sin asignar",
+        },
+      });
+      const editedProduct = Object.assign(product, { id: id });
 
-    return editedProduct
+      await saveProduct(editedProduct);
+
+      return editedProduct;
+    } else {
+      const editedProduct = Object.assign(product, { id: id });
+
+      await saveProduct(editedProduct);
+
+      return editedProduct;
+    }
   }
-}
+};
 
 module.exports = { getAllProducts, registerNewProduct, editProductById };
